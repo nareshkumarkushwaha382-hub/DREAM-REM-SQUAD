@@ -619,51 +619,73 @@
 
   <!-- ================= JOIN FORM DEMO ================= -->
 
-  <script>
-  document
-    .getElementById("drs-join-form")
-    .addEventListener("submit", async function(event) {
-      event.preventDefault();
+<script>
+document
+  .getElementById("drs-join-form")
+  .addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-      const displayName = document.getElementById("display-name").value.trim();
-      const country = document.getElementById("country").value;
-      const favoriteSection =
-        document.getElementById("favorite-section").value || null;
-      const message =
-        document.getElementById("message").value.trim() || null;
+    console.log("DRS form submitted");
 
-      if (!displayName || !country) {
-        alert("Please enter your DRS display name and select your country.");
-        return;
-      }
+    const displayName = document.getElementById("display-name").value.trim();
+    const country = document.getElementById("country").value;
+    const favoriteSection =
+      document.getElementById("favorite-section").value || null;
+    const message =
+      document.getElementById("message").value.trim() || null;
 
-      const { error } = await supabase
-        .from("members")
-        .insert({
-          display_name: displayName,
-          country: country,
-          favorite_section: favoriteSection,
-          message: message
-        });
+    console.log({
+      displayName,
+      country,
+      favoriteSection,
+      message
+    });
 
-      if (error) {
-        console.error(error);
-        alert(
-          "Registration failed.\n\nPlease try again."
-        );
-        return;
-      }
+    if (!displayName || !country) {
+      alert("Please enter your DRS display name and select your country.");
+      return;
+    }
+
+    console.log("Sending data to Supabase...");
+
+    const { data, error } = await supabase
+      .from("members")
+      .insert({
+        display_name: displayName,
+        country: country,
+        favorite_section: favoriteSection,
+        message: message
+      })
+      .select();
+
+    if (error) {
+      console.error("SUPABASE ERROR:", error);
+      console.error("Code:", error.code);
+      console.error("Message:", error.message);
+      console.error("Details:", error.details);
+      console.error("Hint:", error.hint);
 
       alert(
-        "Welcome to DRS, " +
-        displayName +
-        "! 🌌\n\n" +
-        "Your DRS registration has been saved successfully."
+        "Registration failed.\n\n" +
+        error.message +
+        "\n\nCheck the browser console for the full error."
       );
 
-      document.getElementById("drs-join-form").reset();
-    });
-  </script>
+      return;
+    }
+
+    console.log("SUCCESS:", data);
+
+    alert(
+      "Welcome to DRS, " +
+      displayName +
+      "! 🌌\n\n" +
+      "Your registration has been saved successfully."
+    );
+
+    document.getElementById("drs-join-form").reset();
+  });
+</script>>
 
 </body>
 </html>
