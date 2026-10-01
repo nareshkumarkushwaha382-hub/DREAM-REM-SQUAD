@@ -620,36 +620,49 @@
   <!-- ================= JOIN FORM DEMO ================= -->
 
   <script>
+  document
+    .getElementById("drs-join-form")
+    .addEventListener("submit", async function(event) {
+      event.preventDefault();
 
-    document
-      .getElementById("drs-join-form")
-      .addEventListener("submit", function(event) {
+      const displayName = document.getElementById("display-name").value.trim();
+      const country = document.getElementById("country").value;
+      const favoriteSection =
+        document.getElementById("favorite-section").value || null;
+      const message =
+        document.getElementById("message").value.trim() || null;
 
-        event.preventDefault();
+      if (!displayName || !country) {
+        alert("Please enter your DRS display name and select your country.");
+        return;
+      }
 
-        const displayName =
-          document.getElementById("display-name").value.trim();
+      const { error } = await supabase
+        .from("members")
+        .insert({
+          display_name: displayName,
+          country: country,
+          favorite_section: favoriteSection,
+          message: message
+        });
 
-        const country =
-          document.getElementById("country").value;
-
-        if (!displayName || !country) {
-          return;
-        }
-
+      if (error) {
+        console.error(error);
         alert(
-          "Welcome to DRS, " +
-          displayName +
-          "! 🌌\n\n" +
-          "Country: " +
-          country +
-          "\n\n" +
-          "Your registration interface is ready.\n" +
-          "The real DRS membership database will be connected in a future version."
+          "Registration failed.\n\nPlease try again."
         );
+        return;
+      }
 
-      });
+      alert(
+        "Welcome to DRS, " +
+        displayName +
+        "! 🌌\n\n" +
+        "Your DRS registration has been saved successfully."
+      );
 
+      document.getElementById("drs-join-form").reset();
+    });
   </script>
 
 </body>
