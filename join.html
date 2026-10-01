@@ -602,7 +602,17 @@
     &uarr;
   </button>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+  const SUPABASE_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ldxtTcc_MrVM0FOTXCkQ9w_Vrvy1YF7";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+</script>
   <script src="js/main.js"></script>
 
 
