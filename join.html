@@ -687,7 +687,10 @@ document
   });
 </script>>
 <script>
-  alert("DRS JavaScript is working!");
+document.getElementById("drs-join-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    alert("FORM SUBMIT IS WORKING!");
+});
 </script>
   
 </body>
