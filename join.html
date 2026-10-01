@@ -689,7 +689,12 @@ document
 <script>
 document.getElementById("drs-join-form").addEventListener("submit", function(event) {
     event.preventDefault();
-    alert("FORM SUBMIT IS WORKING!");
+
+    if (typeof supabase === "object") {
+        alert("Supabase is loaded!");
+    } else {
+        alert("Supabase is NOT loaded!");
+    }
 });
 </script>
   
